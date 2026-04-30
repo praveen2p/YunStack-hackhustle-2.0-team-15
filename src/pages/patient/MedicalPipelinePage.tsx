@@ -108,7 +108,7 @@ export default function MedicalPipelinePage() {
         </div>
         <h1 className="text-4xl font-display font-bold text-slate-900 tracking-tight sm:text-5xl">The Intelligence Pipeline</h1>
         <p className="mt-4 text-slate-500 max-w-2xl mx-auto text-lg hover:text-slate-700 transition-colors">
-          Explore how HealPath AI transforms fragmented medical chaos into a longitudinal structured memory.
+          Explore how Memora AI transforms fragmented medical chaos into a longitudinal structured memory.
         </p>
       </div>
 

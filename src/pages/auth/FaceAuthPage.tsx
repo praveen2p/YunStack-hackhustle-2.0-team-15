@@ -76,7 +76,7 @@ export default function FaceAuthPage() {
       const credential = await navigator.credentials.create({
         publicKey: {
           challenge: randomBytes(32),
-          rp: { name: 'HealPath AI' },
+          rp: { name: 'Memora AI' },
           user: {
             id: randomBytes(16),
             name: user.email,

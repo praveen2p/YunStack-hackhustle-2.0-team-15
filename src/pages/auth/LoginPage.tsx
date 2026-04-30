@@ -24,7 +24,7 @@ export default function LoginPage() {
       setEmail('');
       return;
     }
-    if (role === 'admin') setEmail('admin@healpath.ai');
+    if (role === 'admin') setEmail('admin@memora.ai');
     else if (role === 'doctor') setEmail('dr.smith@hospital.com');
     else if (role === 'patient') setEmail('john.doe@email.com');
   }, [role, isRegister]);

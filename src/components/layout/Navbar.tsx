@@ -21,7 +21,7 @@ export default function DashboardNavbar() {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 lg:hidden">
           <Stethoscope className="h-6 w-6 text-medical-600" />
-          <span className="font-display text-xl font-bold tracking-tight">HealPath</span>
+          <span className="font-display text-xl font-bold tracking-tight">Memora</span>
         </div>
         
         <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-4 py-2 lg:flex">

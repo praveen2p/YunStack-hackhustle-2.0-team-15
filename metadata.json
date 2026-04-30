@@ -1,5 +1,5 @@
 {
-  "name": "HealPath AI",
+  "name": "Memora AI",
   "description": "Secure longitudinal healthcare memory platform with AI insights and consent-driven access control.",
   "requestFramePermissions": [
     "camera"

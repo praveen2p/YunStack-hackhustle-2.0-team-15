@@ -25,11 +25,11 @@ def seed_demo_data(db: Session) -> None:
         organization="City General Hospital",
     )
     admin = User(
-        email="admin@healpath.ai",
+        email="admin@memora.ai",
         name="Platform Admin",
         hashed_password=hash_password("password123"),
         role=UserRole.admin,
-        organization="HealPath AI",
+        organization="Memora AI",
     )
     db.add_all([patient, doctor, admin])
     db.flush()

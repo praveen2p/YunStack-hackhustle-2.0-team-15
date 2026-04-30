@@ -15,7 +15,7 @@ with SessionLocal() as db:
 
 app = FastAPI(
     title="MedMemory API",
-    description="Backend for HealPath AI — patient-consent-driven medical records",
+    description="Backend for Memora AI — patient-consent-driven medical records",
     version="1.0.0",
 )
 

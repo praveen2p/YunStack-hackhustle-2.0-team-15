@@ -196,7 +196,7 @@ export default function ThirdPartyDashboard() {
                 <span className="text-3xl font-bold text-slate-900">+12%</span>
                 <span className="text-emerald-500 text-xs font-bold mb-1.5 flex items-center"><TrendingUp className="h-3 w-3 mr-0.5" /> vs last month</span>
               </div>
-              <p className="text-xs text-slate-500">HealPath AI saved 22 hours of manual data entry this week.</p>
+              <p className="text-xs text-slate-500">Memora AI saved 22 hours of manual data entry this week.</p>
             </div>
           </div>
         </div>

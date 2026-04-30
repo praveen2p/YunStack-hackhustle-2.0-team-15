@@ -31,7 +31,7 @@ export default function LandingPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-medical-600 text-white shadow-lg ">
               <Stethoscope className="h-6 w-6" />
             </div>
-            <span className="font-display text-2xl font-bold tracking-tight text-slate-900">HealPath AI</span>
+            <span className="font-display text-2xl font-bold tracking-tight text-slate-900">Memora AI</span>
           </div>
           <div className="hidden items-center gap-8 md:flex">
             <a href="#features" className="text-sm font-medium text-slate-600 hover:text-medical-600">Features</a>
@@ -87,7 +87,7 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mx-auto mt-8 max-w-2xl text-lg text-slate-600 sm:text-xl lg:text-2xl leading-relaxed"
           >
-            HealPath AI is a premium longitudinal healthcare memory platform. 
+            Memora AI is a premium longitudinal healthcare memory platform. 
             We unify your fragmented medical records into a single, AI-powered secure timeline 
             controlled entirely by your consent.
           </motion.p>
@@ -194,7 +194,7 @@ export default function LandingPage() {
               </div>
               <h2 className="mt-8 font-display text-4xl font-bold sm:text-5xl">Your data belongs to you.<br />Period.</h2>
               <p className="mt-6 text-slate-400 text-lg leading-relaxed">
-                We believe healthcare should be secure by design. Every action on HealPath AI 
+                We believe healthcare should be secure by design. Every action on Memora AI 
                 is written to a tamper-evident audit ledger and protected with patient-controlled consent.
               </p>
               
@@ -256,14 +256,14 @@ export default function LandingPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-medical-600 text-white shadow-lg ">
                 <Stethoscope className="h-5 w-5" />
               </div>
-              <span className="font-display text-xl font-bold tracking-tight text-slate-900">HealPath AI</span>
+              <span className="font-display text-xl font-bold tracking-tight text-slate-900">Memora AI</span>
             </div>
             <div className="flex gap-8 text-sm font-medium text-slate-500">
               <a href="#" className="hover:text-medical-600">Privacy Policy</a>
               <a href="#" className="hover:text-medical-600">Terms of Service</a>
               <a href="#" className="hover:text-medical-600">Legal</a>
             </div>
-            <p className="text-sm text-slate-400">© 2026 HealPath AI. All rights reserved.</p>
+            <p className="text-sm text-slate-400">© 2026 Memora AI. All rights reserved.</p>
           </div>
         </div>
       </footer>

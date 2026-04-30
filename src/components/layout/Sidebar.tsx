@@ -91,7 +91,7 @@ export default function Sidebar() {
           <Stethoscope className="h-6 w-6" />
         </div>
         <div>
-          <h1 className="font-display text-xl font-bold tracking-tight text-slate-900 leading-tight">HealPath AI</h1>
+          <h1 className="font-display text-xl font-bold tracking-tight text-slate-900 leading-tight">Memora AI</h1>
           <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Medical Memory</p>
         </div>
       </div>

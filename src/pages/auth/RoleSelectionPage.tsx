@@ -80,7 +80,7 @@ export default function RoleSelectionPage() {
             <Stethoscope className="h-8 w-8" />
           </motion.div>
           <h1 className="text-4xl font-display font-bold text-slate-900 tracking-tight">Identity Gateway</h1>
-          <p className="mt-4 text-slate-600 text-lg">Select your portal to enter the HealPath AI ecosystem.</p>
+          <p className="mt-4 text-slate-600 text-lg">Select your portal to enter the Memora AI ecosystem.</p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

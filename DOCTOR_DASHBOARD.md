@@ -57,7 +57,7 @@ Once logged in, you'll see the **Doctor Dashboard** at `/doctor` with:
 ### Test Accounts Created:
 - **Patient**: john.doe@email.com / password123 (HP-ID: HP-PAT-DEMO)
 - **Doctor**: dr.smith@hospital.com / password123
-- **Admin**: admin@healpath.ai / password123
+- **Admin**: admin@memora.ai / password123
 
 ### Test Workflow:
 1. Doctor uploads a medical record → Creates consent request
