@@ -1,5 +1,7 @@
 # MedMemory
 
+HackHustle 2.0 Team 15 project: YunStack healthcare memory platform.
+
 MedMemory is a full-stack medical record and consent management platform with AI-assisted clinical summarization and predictive risk analysis. It is built as a prototype for a healthcare interoperability problem: patients often have records spread across hospitals, labs, clinics, and pharmacies, while providers need timely access to trustworthy history without bypassing patient consent.
 
 The system gives patients a single health record hub, lets verified healthcare organizations request access or upload new records, and keeps every sensitive action visible through audit logs. On top of the record layer, MedMemory extracts clinical signals from uploaded documents and generates patient-facing summaries, timelines, and risk analysis.
