@@ -1,0 +1,12 @@
+{
+  "name": "HealPath AI",
+  "description": "Secure longitudinal healthcare memory platform with AI insights and consent-driven access control.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "AI Medical Insights",
+    "Consent-Driven Workflows",
+    "Longitudinal Health Records"
+  ]
+}
