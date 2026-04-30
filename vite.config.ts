@@ -16,14 +16,11 @@ export default defineConfig(({mode}) => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      outDir: 'dist',
+    },
     server: {
       port: 3000,
-      proxy: {
-        '/api': {
-          target: env.VITE_API_URL || 'http://localhost:8000',
-          changeOrigin: true,
-        },
-      },
       hmr: process.env.DISABLE_HMR !== 'true',
     },
   };

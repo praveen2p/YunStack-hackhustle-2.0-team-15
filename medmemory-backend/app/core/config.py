@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "dev-secret-change-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000"
     GEMINI_API_KEY: str | None = None
     VITE_GEMINI_API_KEY: str | None = None
     AES_256_KEY: str | None = None

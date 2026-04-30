@@ -312,6 +312,33 @@ print(get_fhir_model_status())
 PY
 ```
 
+## Deployment
+
+Frontend on Vercel:
+
+- Deploy the repository root as the Vercel project.
+- Set the Vercel environment variable:
+  - `VITE_API_URL=https://your-backend.onrender.com`
+- Vercel builds the React app into `dist`.
+- `vercel.json` rewrites all routes to `index.html` so React Router works on refresh and direct links.
+
+Backend on Render:
+
+- Create a new Render Web Service from this GitHub repository.
+- Set the Render root directory to `medmemory-backend`.
+- Use these Render commands:
+  - Build Command: `pip install -r requirements.txt`
+  - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Set the Render environment variables from `medmemory-backend/.env.example`:
+  - `DATABASE_URL`
+  - `MONGODB_URI`
+  - `SECRET_KEY`
+  - `ALLOWED_ORIGINS`
+  - `GEMINI_API_KEY`
+- `DATABASE_URL` should be the Render PostgreSQL connection string.
+- `ALLOWED_ORIGINS` should include the deployed Vercel URL, for example `https://your-app.vercel.app`.
+- The root `render.yaml` contains the same Render setup as a Blueprint option.
+
 ## Troubleshooting
 
 Invalid or expired token:

@@ -1,9 +1,10 @@
 import { User, MedicalRecord, ConsentRequest, AuditLog, PatientAISummary, PatientRiskAnalysis } from '../types';
 
-// Get API URL from environment or use localhost
-// In dev mode with Vite proxy, requests go to /api which proxies to backend
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const API_BASE = '/api'; // Use proxy in dev, full URL in production
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error('VITE_API_URL is required. Set it to your deployed backend URL, for example https://your-backend.onrender.com');
+}
+const API_BASE = `${API_URL.replace(/\/$/, '')}/api`;
 export const AUTH_EXPIRED_EVENT = 'healpath:auth-expired';
 
 interface LoginResponse {

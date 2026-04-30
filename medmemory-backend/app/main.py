@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import admin, auth, org, patient
+from app.core.config import settings
 from app.core.database import Base, SessionLocal, engine, ensure_schema
 from app.core.mongodb import mongo_document_store
 from app.services.seed_service import seed_demo_data
@@ -20,7 +21,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite dev server
+    allow_origins=[origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",") if origin.strip()],
     allow_origin_regex=r"http://localhost:30[0-9]{2}",
     allow_credentials=True,
     allow_methods=["*"],
