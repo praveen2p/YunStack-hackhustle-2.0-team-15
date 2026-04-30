@@ -66,7 +66,7 @@ export default function UploadRecordPage() {
         i++;
       } else {
         clearInterval(interval);
-        orgAPI.uploadDocument(patientId, 'lab', files[0])
+        orgAPI.uploadDocument(patientId, 'auto', files[0])
           .then(() => setUploadStep('done'))
           .catch((err) => {
             setError(err instanceof Error ? err.message : 'Upload failed');

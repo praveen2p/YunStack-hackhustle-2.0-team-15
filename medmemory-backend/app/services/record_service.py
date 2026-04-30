@@ -101,13 +101,14 @@ def upload_processed_record(
     content = json.dumps({
         "structured_data": processed.extracted_data,
         "summary": processed.summary,
+        "document_type": processed.record_type,
         "risk": processed.risk_label,
         "confidence": processed.risk_confidence,
         "source_file": file_name,
     })
     payload = RecordCreate(
         patient_hp_id=patient_hp_id,
-        type=record_type,
+        type=processed.record_type,
         title=processed.title,
         content=content,
         date=datetime.now(timezone.utc),

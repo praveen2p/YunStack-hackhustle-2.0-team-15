@@ -70,7 +70,7 @@ def upload_record(
 @router.post("/upload-file")
 async def upload_file_record(
     patient_hp_id: str = Form(...),
-    type: str = Form("lab"),
+    type: str = Form("auto"),
     file: UploadFile = File(...),
     current: User = Depends(_org),
     db: Session = Depends(get_db),
@@ -83,7 +83,7 @@ async def upload_file_record(
         content_type=file.content_type,
         patient_hp_id=patient_hp_id,
         provider_id=current.id,
-        record_type=type,
+        record_type=processed.record_type,
         extracted_data=processed.extracted_data,
     )
     result = record_service.upload_processed_record(
@@ -102,6 +102,7 @@ async def upload_file_record(
         "file_name": file.filename,
         "storage_provider": "mongodb" if storage_key else "database",
         "summary": processed.summary,
+        "document_type": processed.record_type,
         "risk": processed.risk_label,
         "confidence": processed.risk_confidence,
         "structured_data": processed.extracted_data,

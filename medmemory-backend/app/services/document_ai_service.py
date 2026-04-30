@@ -46,6 +46,7 @@ class ProcessedDocument:
     content: str
     summary: str
     extracted_data: dict[str, Any]
+    record_type: str
     risk_label: str
     risk_confidence: str
 
@@ -112,6 +113,7 @@ def _format_value(value: Any) -> str:
 
 def _build_readable_content(
     summary: str,
+    record_type: str,
     risk_label: str,
     risk_confidence: str,
     extracted: dict[str, Any],
@@ -119,6 +121,7 @@ def _build_readable_content(
 ) -> str:
     lines = [
         f"Summary: {summary}",
+        f"Document type: {record_type}",
         f"Risk level: {risk_label}",
         f"Confidence: {risk_confidence}",
         f"Source file: {filename}",
@@ -188,10 +191,12 @@ Return ONLY JSON:
   "bmi": number,
   "diagnosis": [],
   "medications": [],
+  "document_type": "lab|prescription|imaging|consultation|vaccination|discharge",
   "summary": "short clinical summary"
 }
 
 If any value is missing, return null.
+Choose the best document_type from the allowed values based on visible content.
 Do not add explanation.
 """
     response = client.models.generate_content(
@@ -223,10 +228,12 @@ Return ONLY JSON:
   "bmi": number,
   "diagnosis": [],
   "medications": [],
+  "document_type": "lab|prescription|imaging|consultation|vaccination|discharge",
   "summary": "short clinical summary"
 }}
 
 If any value is missing, return null.
+Choose the best document_type from the allowed values based on the text.
 Do not add explanation.
 
 Medical text:
@@ -311,8 +318,90 @@ def _fallback_extract_from_text(text: str, filename: str) -> dict[str, Any]:
         "bmi": _extract_number(r"bmi[:\s]+(\d+(?:\.\d+)?)"),
         "diagnosis": diagnoses,
         "medications": medications,
+        "document_type": _classify_document_type(text, filename),
         "summary": summary[:500],
     }
+
+
+DOCUMENT_TYPES = {"lab", "prescription", "imaging", "consultation", "vaccination", "discharge"}
+
+
+def _score_keywords(haystack: str, keywords: list[str]) -> int:
+    return sum(1 for keyword in keywords if re.search(rf"\b{re.escape(keyword)}\b", haystack))
+
+
+def _classify_document_type(text: str, filename: str) -> str:
+    haystack = f"{Path(filename).stem} {text}".lower()
+
+    scores = {
+        "prescription": _score_keywords(haystack, [
+            "prescription", "rx", "prescribed", "tablet", "capsule", "syrup", "ointment",
+            "dose", "dosage", "frequency", "medication", "medications", "pharmacy",
+            "refill", "take", "oral",
+        ]),
+        "lab": _score_keywords(haystack, [
+            "lab", "laboratory", "pathology", "test", "tests", "result", "results",
+            "report", "specimen", "sample", "glucose", "hba1c", "cholesterol", "cbc",
+            "hemoglobin", "platelet", "creatinine", "bilirubin", "urine", "blood",
+            "reference range",
+        ]),
+        "imaging": _score_keywords(haystack, [
+            "xray", "x-ray", "mri", "ct", "scan", "ultrasound", "sonography",
+            "radiology", "imaging", "contrast", "impression", "findings",
+        ]),
+        "discharge": _score_keywords(haystack, [
+            "discharge", "admission", "admitted", "hospital course", "condition on discharge",
+            "discharge summary", "ward", "inpatient",
+        ]),
+        "vaccination": _score_keywords(haystack, [
+            "vaccination", "vaccine", "immunization", "immunisation", "booster",
+            "covid", "influenza", "hepatitis", "mmr", "tdap",
+        ]),
+        "consultation": _score_keywords(haystack, [
+            "consultation", "consult", "clinical note", "progress note", "chief complaint",
+            "assessment", "plan", "follow up", "follow-up", "diagnosis", "symptoms",
+            "examination",
+        ]),
+    }
+
+    # Medication-heavy documents are prescriptions even when they mention a diagnosis.
+    if scores["prescription"] >= 2:
+        return "prescription"
+    if scores["discharge"] >= 2:
+        return "discharge"
+    if scores["vaccination"] >= 1:
+        return "vaccination"
+    if scores["imaging"] >= 2:
+        return "imaging"
+    if scores["lab"] >= 2:
+        return "lab"
+    if scores["consultation"] >= 2:
+        return "consultation"
+
+    best_type, best_score = max(scores.items(), key=lambda item: item[1])
+    return best_type if best_score > 0 else "consultation"
+
+
+def _normalize_document_type(value: Any, text: str, filename: str) -> str:
+    if isinstance(value, str):
+        normalized = value.strip().lower().replace(" ", "_")
+        aliases = {
+            "laboratory": "lab",
+            "lab_report": "lab",
+            "diagnostic": "lab",
+            "diagnostic_report": "lab",
+            "radiology": "imaging",
+            "scan": "imaging",
+            "immunization": "vaccination",
+            "immunisation": "vaccination",
+            "clinical_note": "consultation",
+            "consult": "consultation",
+            "discharge_summary": "discharge",
+        }
+        normalized = aliases.get(normalized, normalized)
+        if normalized in DOCUMENT_TYPES:
+            return normalized
+    return _classify_document_type(text, filename)
 
 
 def _extract_structured_data_from_text(text: str, filename: str) -> dict[str, Any]:
@@ -322,6 +411,7 @@ def _extract_structured_data_from_text(text: str, filename: str) -> dict[str, An
 
     extracted = _extract_with_gemini_from_text(normalized_text)
     if extracted is not None:
+        extracted["document_type"] = _normalize_document_type(extracted.get("document_type"), normalized_text, filename)
         return extracted
     return _fallback_extract_from_text(normalized_text, filename)
 
@@ -357,14 +447,17 @@ def process_uploaded_document(file_bytes: bytes, filename: str, content_type: st
     if extracted is None:
         extracted = _fallback_extract_from_text(extracted_text, filename)
 
+    record_type = _normalize_document_type(extracted.get("document_type"), extracted_text, filename)
+    extracted["document_type"] = record_type
     risk_label, risk_confidence = _predict_risk(_fill_missing_features(extracted))
     summary = extracted.get("summary") or f"Clinical document {filename} uploaded for processing."
-    content = _build_readable_content(summary, risk_label, risk_confidence, extracted, filename)
+    content = _build_readable_content(summary, record_type, risk_label, risk_confidence, extracted, filename)
     return ProcessedDocument(
         title=Path(filename).stem.replace("_", " ").strip() or "Uploaded medical document",
         content=content,
         summary=summary,
         extracted_data=extracted,
+        record_type=record_type,
         risk_label=risk_label,
         risk_confidence=risk_confidence,
     )

@@ -2,6 +2,7 @@ services:
   - type: web
     name: medmemory-backend
     env: python
+    runtime: python-3.11.9   
     rootDir: medmemory-backend
     plan: free
     buildCommand: pip install -r requirements.txt
